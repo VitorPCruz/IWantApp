@@ -12,10 +12,10 @@ public class CategoryPut
 
     public static IResult Action([FromRoute] Guid id, CategoryRequest categoryRequest, ApplicationDbContext context)
     {
-        if (string.IsNullOrEmpty(categoryRequest.Name))
-            return Results.BadRequest("Name is required");
 
         var category = context.Categories.Where(c => c.Id == id).FirstOrDefault();
+
+        if (category == null) return Results.NotFound();
 
         category.Name = categoryRequest.Name;
         category.Active = categoryRequest.Active;
