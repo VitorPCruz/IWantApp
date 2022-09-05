@@ -10,6 +10,8 @@ builder.Services.AddSqlServer<ApplicationDbContext>(
 builder.Services.AddIdentity<IdentityUser, IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>();
 
+builder.Services.AddScoped<QueryAllUsersWithClaimName>();
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
