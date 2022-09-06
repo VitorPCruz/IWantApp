@@ -1,5 +1,3 @@
-using Flunt.Notifications;
-
 namespace IWantApp.Domain;
 
 public abstract class Entity : Notifiable<Notification>
@@ -14,5 +12,4 @@ public abstract class Entity : Notifiable<Notification>
     {
         Id = new Guid();
     }
-
 }

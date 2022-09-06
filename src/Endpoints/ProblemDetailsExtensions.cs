@@ -1,5 +1,3 @@
-using Flunt.Notifications;
-using Microsoft.AspNetCore.Identity;
 
 namespace IWantApp.Endpoints;
 

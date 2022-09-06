@@ -1,9 +1,5 @@
-using IWantApp.Infra.Data;
-using Microsoft.AspNetCore.Authorization;
-
 namespace IWantApp.Endpoints.Employees;
 public class EmployeeGetAll
-
 {
     public static string Template => "/employees";
     public static string[] Methods => new string[] { HttpMethod.Get.ToString() };
