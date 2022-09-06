@@ -43,7 +43,8 @@ public class TokenPost
                 SecurityAlgorithms.HmacSha256Signature
             ),
             Audience = configurations["JwtBearerTokenSettings:Audience"],
-            Issuer = configurations["JwtBearerTokenSettings:Issuer"]
+            Issuer = configurations["JwtBearerTokenSettings:Issuer"],
+            Expires = DateTime.UtcNow.AddHours(1)
         };
 
         var tokenHandler = new JwtSecurityTokenHandler();
