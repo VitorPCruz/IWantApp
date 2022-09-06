@@ -13,7 +13,7 @@ public class TokenPost
     public static Delegate Handle => Action;
 
     [AllowAnonymous]
-    public static IResult Action(LoginRequest loginRequest, IConfiguration configuration, UserManager<IdentityUser> userManager)
+    public static IResult Action(LoginRequest loginRequest, IConfiguration configurations, UserManager<IdentityUser> userManager)
     {
         var user = userManager.FindByEmailAsync(loginRequest.Email).Result;
 
@@ -22,21 +22,28 @@ public class TokenPost
         if (!userManager.CheckPasswordAsync(user, loginRequest.Password).Result)
             return Results.BadRequest();
 
-        var key = Encoding.ASCII.GetBytes(configuration["JwtBearerTokenSettings:SecretKey"]);
+        var claims = userManager.GetClaimsAsync(user).Result;
+
+        var key = Encoding.ASCII.GetBytes(
+            configurations["JwtBearerTokenSettings:SecretKey"]);
+
+        var subject = new ClaimsIdentity(new Claim[]
+        {
+            new Claim(ClaimTypes.Email, loginRequest.Email),
+            new Claim(ClaimTypes.NameIdentifier, user.Id),
+        });
+
+        subject.AddClaims(claims);
 
         var tokenDescriptor = new SecurityTokenDescriptor
         {
-            Subject = new ClaimsIdentity(new Claim[]
-            {
-                new Claim(ClaimTypes.Email, loginRequest.Email),
-                new Claim("EmployeeCode", "005"),
-            }),
+            Subject = subject,
             SigningCredentials = new SigningCredentials(
                 new SymmetricSecurityKey(key),
                 SecurityAlgorithms.HmacSha256Signature
             ),
-            Audience = configuration["JwtBearerTokenSettings:Audience"],
-            Issuer = configuration["JwtBearerTokenSettings:Issuer"]
+            Audience = configurations["JwtBearerTokenSettings:Audience"],
+            Issuer = configurations["JwtBearerTokenSettings:Issuer"]
         };
 
         var tokenHandler = new JwtSecurityTokenHandler();
