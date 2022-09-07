@@ -55,4 +55,4 @@ dotnet_style_require_accessibility_modifiers = for_non_interface_members:suggest
 csharp_preferred_modifier_order = public,internal:suggestion
 csharp_style_namespace_declarations=file_scoped:silent
 
-dotnet_analyzer_diagnostic.severity = error
+# dotnet_analyzer_diagnostic.severity = error

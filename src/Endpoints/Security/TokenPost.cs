@@ -7,8 +7,15 @@ public class TokenPost
     public static Delegate Handle => Action;
 
     [AllowAnonymous]
-    public static IResult Action(LoginRequest loginRequest, IConfiguration configurations, UserManager<IdentityUser> userManager)
+    public static IResult Action(
+        LoginRequest loginRequest,
+        IConfiguration configurations,
+        UserManager<IdentityUser> userManager,
+        ILogger<TokenPost> log)
     {
+        log.LogInformation("Getting Token");
+        log.LogWarning("WARNING");
+
         var user = userManager.FindByEmailAsync(loginRequest.Email).Result;
 
         if (user == null) return Results.BadRequest();
@@ -18,8 +25,7 @@ public class TokenPost
 
         var claims = userManager.GetClaimsAsync(user).Result;
 
-        var key = Encoding.ASCII.GetBytes(
-            configurations["JwtBearerTokenSettings:SecretKey"]);
+        var key = Encoding.ASCII.GetBytes(configurations["JwtBearerTokenSettings:SecretKey"]);
 
         var subject = new ClaimsIdentity(new Claim[]
         {
