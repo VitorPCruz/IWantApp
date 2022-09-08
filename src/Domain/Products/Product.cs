@@ -1,3 +1,5 @@
+using IWantApp.Domain.Orders;
+
 namespace IWantApp.Domain.Products;
 
 public class Product : Entity
@@ -10,6 +12,7 @@ public class Product : Entity
     public bool Active { get; set; } = true;
 
     public decimal Price { get; private set; }
+    public ICollection<Order> Orders { get; private set; }
 
     public Product() { }
 
