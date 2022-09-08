@@ -9,14 +9,17 @@ public class Product : Entity
     public bool HasStock { get; set; }
     public bool Active { get; set; } = true;
 
+    public decimal Price { get; private set; }
+
     public Product() { }
 
-    public Product(string name, Category category, string description, bool hasStock, string createdBy)
+    public Product(string name, Category category, string description, bool hasStock, decimal price, string createdBy)
     {
         Name = name;
         Category = category;
         Description = description;
         HasStock = hasStock;
+        Price = price;
 
         CreatedBy = createdBy;
         EditedBy = createdBy;
@@ -34,6 +37,7 @@ public class Product : Entity
             .IsNotNull(Category, "Category", "Category not found")
             .IsNotNullOrEmpty(Description, "Description")
             .IsGreaterOrEqualsThan(Description, 3, "Description")
+            .IsGreaterOrEqualsThan(Price, 1, "Price")
             .IsNotNullOrEmpty(CreatedBy, "CreatedBy")
             .IsNotNullOrEmpty(EditedBy, "EditedBy");
         AddNotifications(contract);

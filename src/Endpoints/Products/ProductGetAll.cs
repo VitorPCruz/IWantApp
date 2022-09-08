@@ -16,6 +16,7 @@ public class ProductGetAll
             p.Name,
             p.Category.Name,
             p.Description,
+            p.Price,
             p.HasStock,
             p.Active
         ));

@@ -1,0 +1,9 @@
+TODO: Check endpoints to set query parameter validation
+
+TODO: Create endpoint to alter a specific category
+TODO: Create endpoint to alter a specific employee
+TODO: Create endpoint to alter a specific product
+
+TODO: Create endpoint to delete a specific category
+TODO: Create endpoint to delete a specific employee
+TODO: Create endpoint to delete a specific product
