@@ -2,9 +2,9 @@ namespace IWantApp.Domain.Products;
 
 public class Product : Entity
 {
-    public string? Name { get; set; }
+    public string Name { get; set; }
     public Guid CategoryId { get; set; }
-    public Category? Category { get; set; }
+    public Category Category { get; set; }
     public string? Description { get; set; }
     public bool HasStock { get; set; }
     public bool Active { get; set; } = true;
@@ -31,7 +31,7 @@ public class Product : Entity
         var contract = new Contract<Product>()
             .IsNotNullOrEmpty(Name, "Name")
             .IsGreaterOrEqualsThan(Name, 3, "Name")
-            .IsNotNull(Category, "Category")
+            .IsNotNull(Category, "Category", "Category not found")
             .IsNotNullOrEmpty(Description, "Description")
             .IsGreaterOrEqualsThan(Description, 3, "Description")
             .IsNotNullOrEmpty(CreatedBy, "CreatedBy")

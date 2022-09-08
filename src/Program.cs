@@ -1,5 +1,6 @@
 #pragma warning disable 612, 618 
 
+using System.Text.Json;
 using IWantApp.Endpoints.Products;
 using Microsoft.AspNetCore.Diagnostics;
 using Serilog;
@@ -93,9 +94,12 @@ app.Map("/error", (HttpContext http) =>
     {
         if (error is SqlException)
             return Results.Problem(title: "Database out", statusCode: 500);
+
+        if (error is BadHttpRequestException)
+            return Results.Problem(title: "Error to convert data to another type. See all the information sent", statusCode: 500);
     }
 
-    return Results.Problem(title: "An error occured", statusCode: 500);
+    return Results.Problem(error.Message, error.StackTrace);
 });
 
 app.Run();
