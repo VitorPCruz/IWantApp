@@ -1,3 +1,5 @@
+using IWant.Domain.Users;
+
 namespace IWantApp.Endpoints.Clients;
 
 public class ClientPost
@@ -7,28 +9,20 @@ public class ClientPost
     public static Delegate Handle => Action;
 
     [AllowAnonymous]
-    public static async Task<IResult> Action(
-        ClientRequest clientRequest,
-        HttpContext http,
-        UserManager<IdentityUser> userManager)
+    public static async Task<IResult> Action(ClientRequest clientRequest, UserCreator userCreator)
     {
-        var newUser = new IdentityUser { UserName = clientRequest.Email, Email = clientRequest.Email };
-        var result = await userManager.CreateAsync(newUser, clientRequest.Password);
-
-        if (!result.Succeeded)
-            return Results.ValidationProblem(result.Errors.ConvertToProblemDetails());
-
         var userClaims = new List<Claim>
         {
             new Claim("Cpf", clientRequest.Cpf),
             new Claim("Name", clientRequest.Name),
         };
 
-        var claimResult = await userManager.AddClaimsAsync(newUser, userClaims);
+        (IdentityResult identity, string userId) result =
+            await userCreator.Create(clientRequest.Email, clientRequest.Password, userClaims);
 
-        if (!claimResult.Succeeded)
-            return Results.BadRequest(result.Errors.First());
+        if (!result.identity.Succeeded)
+            return Results.BadRequest(result.identity.Errors.ConvertToProblemDetails);
 
-        return Results.Created($"/clients/{newUser.Id}", newUser.Id);
+        return Results.Created($"/clients/{result.userId}", result.userId);
     }
 }

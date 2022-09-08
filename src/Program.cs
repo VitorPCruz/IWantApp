@@ -1,6 +1,7 @@
 #pragma warning disable 612, 618 
 
 using System.Text.Json;
+using IWant.Domain.Users;
 using IWantApp.Endpoints.Clients;
 using IWantApp.Endpoints.Products;
 using Microsoft.AspNetCore.Diagnostics;
@@ -57,6 +58,8 @@ builder.Services.AddAuthentication(x =>
 });
 
 builder.Services.AddScoped<QueryAllUsersWithClaimName>();
+builder.Services.AddScoped<UserCreator>();
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
