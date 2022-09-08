@@ -32,7 +32,8 @@ public class Order : Entity
     {
         var contract = new Contract<Order>()
             .IsNotNull(ClientId, "Cliente")
-            .IsNotNull(Products, "Products");
+            .IsTrue(Products != null && Products.Any(), "Products")
+            .IsNotNullOrEmpty(DeliveryAddress, "DeliveryAddress");
         AddNotifications(contract);
     }
 }

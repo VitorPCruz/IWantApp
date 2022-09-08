@@ -4,6 +4,7 @@ using System.Text.Json;
 using IWant.Domain.Users;
 using IWantApp.Endpoints.Clients;
 using IWantApp.Endpoints.Products;
+using IWantApp.Endpoints.Orders;
 using Microsoft.AspNetCore.Diagnostics;
 using Serilog;
 using Serilog.Sinks.MSSqlServer;
@@ -32,8 +33,12 @@ builder.Services.AddAuthorization((options =>
         .Build();
     options.AddPolicy("EmployeePolicy", p =>
         p.RequireAuthenticatedUser().RequireClaim("EmployeeCode"));
+
     options.AddPolicy("Employee005Policy", p =>
         p.RequireAuthenticatedUser().RequireClaim("EmployeeCode", "005"));
+
+    options.AddPolicy("CpfPolicy", p =>
+        p.RequireAuthenticatedUser().RequireClaim("Cpf"));
 }));
 
 builder.Services.AddAuthentication(x =>
@@ -92,6 +97,7 @@ app.MapMethods(ProductGetShowCase.Template, ProductGetShowCase.Methods, ProductG
 app.MapMethods(ClientPost.Template, ClientPost.Methods, ClientPost.Handle);
 app.MapMethods(ClientGet.Template, ClientGet.Methods, ClientGet.Handle);
 
+app.MapMethods(OrderPost.Template, OrderPost.Methods, OrderPost.Handle);
 
 
 app.UseExceptionHandler("/error");
