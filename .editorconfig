@@ -56,3 +56,7 @@ csharp_preferred_modifier_order = public,internal:suggestion
 csharp_style_namespace_declarations=file_scoped:silent
 
 # dotnet_analyzer_diagnostic.severity = error
+otnet_diagnostic.CA1001.severity = warning
+dotnet_diagnostic.CA1821.severity = warning
+dotnet_diagnostic.CA2213.severity = warning
+dotnet_diagnostic.CA2231.severity = warning
