@@ -20,6 +20,7 @@ public class CategoryPost
         await context.Categories.AddAsync(category);
         await context?.SaveChangesAsync();
 
+        Console.WriteLine("teste");
         return Results.Created($"/categories/{category.Id}", category.Id);
     }
 }
