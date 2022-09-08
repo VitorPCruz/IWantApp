@@ -11,7 +11,8 @@ public class TokenPost
         LoginRequest loginRequest,
         IConfiguration configurations,
         UserManager<IdentityUser> userManager,
-        ILogger<TokenPost> log)
+        ILogger<TokenPost> log,
+        IWebHostEnvironment environment)
     {
         log.LogInformation("Getting Token");
         log.LogWarning("WARNING");
@@ -44,7 +45,7 @@ public class TokenPost
             ),
             Audience = configurations["JwtBearerTokenSettings:Audience"],
             Issuer = configurations["JwtBearerTokenSettings:Issuer"],
-            Expires = DateTime.UtcNow.AddHours(1)
+            Expires = environment.IsDevelopment() || environment.IsStaging() ? DateTime.UtcNow.AddYears(1) : DateTime.UtcNow.AddHours(2)
         };
 
         var tokenHandler = new JwtSecurityTokenHandler();
